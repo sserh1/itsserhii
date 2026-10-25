@@ -3,7 +3,7 @@ import { satteri } from '@astrojs/markdown-satteri';
 import codeTheme from './src/code-theme.mjs';
 
 export default defineConfig({
-  site: 'https://itsserhii.github.io',
+  site: 'https://sserh1.github.io',
   markdown: {
     // Keep straight quotes and plain dashes: curly ones look off in a monospace font.
     processor: satteri({ features: { smartPunctuation: false } }),

@@ -1,6 +1,6 @@
 # it's serhii
 
-Personal blog, built with [Astro](https://astro.build) and deployed to https://itsserhii.github.io.
+Personal blog, built with [Astro](https://astro.build) and deployed to https://sserh1.github.io.
 
 ```sh
 npm install
@@ -28,4 +28,4 @@ Code blocks are highlighted at build time; the colors live in `src/code-theme.mj
 
 ## Deploy
 
-Every push to `main` builds and publishes the site via `.github/workflows/deploy.yml`. One-time setup: the repository must be named `itsserhii.github.io`, and **Settings → Pages → Source** must be set to **GitHub Actions**.
+Every push to `main` builds and publishes the site via `.github/workflows/deploy.yml`. One-time setup: the repository must be named `sserh1.github.io`, and **Settings → Pages → Source** must be set to **GitHub Actions**.
