@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { Content } from '../content/books.md';
+---
+
+<Base title="books">
+  <PageHeader path="books" />
+  <article class="column content prose">
+    <Content />
+  </article>
+</Base>

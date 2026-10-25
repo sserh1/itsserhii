@@ -1,0 +1,67 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Rule from '../components/Rule.astro';
+import { site } from '../site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = site.description } = Astro.props;
+const pageTitle = title ? `${title} · ${site.title}` : site.title;
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+    />
+  </head>
+  <body>
+    <div class="page">
+      <div class="guides" aria-hidden="true"></div>
+      <Nav />
+      <Rule />
+      <main>
+        <slot />
+      </main>
+      <Rule />
+      <footer class="footer column">
+        <div><slot name="footer-left" /></div>
+        <span>© {year} {site.author}</span>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<style>
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 2ch;
+    padding-block: 28px 44px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .footer :global(a) {
+    text-decoration: none;
+  }
+
+  .footer :global(a:hover) {
+    color: var(--ink);
+  }
+</style>

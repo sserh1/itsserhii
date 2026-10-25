@@ -1,0 +1,346 @@
+/* ---------- tokens ---------- */
+
+:root {
+  --bg: #fbfaf6;
+  --ink: #2a2925;
+  --muted: #76726a;
+  --accent: #a3502b;
+  --surface: #f3f0e8;
+  --code-bg: #f6f4ee;
+  --line: #e7e3d9;
+  --line-soft: #efece4;
+  --line-dashed: #dcd7cb;
+  --marker: #a39e93;
+  --grid: rgba(42, 41, 37, 0.06);
+  --font: "JetBrains Mono", ui-monospace, monospace;
+
+  --col: 680px;
+  --gutter: 20px;
+  /* Distance from the page center to the inner (solid) and outer (dashed) guides. */
+  --g1: calc(var(--col) / 2 + 40px);
+  --g2: calc(var(--g1) + 108px);
+
+  color-scheme: light;
+}
+
+/* ---------- base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 15px/1.8 var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, ul, ol, dl, dd, pre, blockquote, figure {
+  margin: 0;
+}
+
+/* Browsers default these to the system monospace. */
+pre, code, kbd, samp {
+  font-family: var(--font);
+}
+
+a {
+  color: inherit;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: rgba(163, 80, 43, 0.18);
+}
+
+.column {
+  width: min(var(--col), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+/* Main block between the header band (or nav) and the footer. */
+.content {
+  padding-block: 72px 96px;
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: 32px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* ---------- geometry ---------- */
+
+.page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.page > main {
+  flex: 1;
+}
+
+.guides {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.guides::before,
+.guides::after {
+  content: "";
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+/* Inner guides: solid, 40px outside the column. */
+.guides::before {
+  left: calc(50% - var(--g1));
+  width: calc(2 * var(--g1));
+  border-inline: 1px solid var(--line);
+}
+
+/* Outer guides: dashed, 108px further out. */
+.guides::after {
+  --dash: repeating-linear-gradient(to bottom, var(--line-dashed) 0 3px, transparent 3px 7px);
+  left: calc(50% - var(--g2));
+  width: calc(2 * var(--g2));
+  background:
+    var(--dash) left top / 1px 100% no-repeat,
+    var(--dash) right top / 1px 100% no-repeat;
+}
+
+.rule {
+  position: relative;
+  z-index: 2;
+  height: 1px;
+  background: var(--line);
+}
+
+/* 5x5 markers centered on the crossings with the guides. */
+.rule i {
+  display: none;
+  position: absolute;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  background: var(--marker);
+}
+
+.rule i:nth-child(1) { left: calc(50% - var(--g2) - 2px); }
+.rule i:nth-child(2) { left: calc(50% - var(--g1) - 2px); }
+.rule i:nth-child(3) { left: calc(50% + var(--g1) - 3px); }
+.rule i:nth-child(4) { left: calc(50% + var(--g2) - 3px); }
+
+/* Drop the outer guides first, then the inner ones. */
+@media (min-width: 820px) {
+  .guides::before,
+  .rule i:nth-child(2),
+  .rule i:nth-child(3) {
+    display: block;
+  }
+}
+
+@media (min-width: 1040px) {
+  .guides::after,
+  .rule i:nth-child(1),
+  .rule i:nth-child(4) {
+    display: block;
+  }
+}
+
+/* ---------- prose ---------- */
+
+.prose > * + * {
+  margin-top: 24px;
+}
+
+.prose > h2,
+.prose > h3 {
+  margin-top: 48px;
+}
+
+.prose p,
+.prose li {
+  text-wrap: pretty;
+}
+
+.prose a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.prose h2 {
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.prose h3 {
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.prose h2::before,
+.prose h3::before {
+  color: var(--muted);
+  font-weight: 400;
+  margin-right: 1ch;
+}
+
+.prose h2::before { content: "##"; }
+.prose h3::before { content: "###"; }
+
+.prose ul,
+.prose ol {
+  list-style: none;
+  padding: 0;
+}
+
+.prose li {
+  position: relative;
+  padding-left: 2.5ch;
+}
+
+.prose li + li,
+.prose li > ul,
+.prose li > ol {
+  margin-top: 6px;
+}
+
+.prose li::before {
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+}
+
+.prose ul > li::before {
+  content: "-";
+}
+
+.prose ol {
+  counter-reset: item;
+}
+
+.prose ol > li {
+  counter-increment: item;
+  padding-left: 3.5ch;
+}
+
+.prose ol > li::before {
+  content: counter(item) ".";
+}
+
+.prose blockquote {
+  position: relative;
+  padding-left: 2.5ch;
+  font-style: italic;
+}
+
+.prose blockquote::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-style: normal;
+}
+
+.prose blockquote > * + * {
+  margin-top: 12px;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose :not(pre) > code {
+  background: var(--surface);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.prose pre {
+  overflow-x: auto;
+  padding: 20px 24px;
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 0;
+  font-size: 13.5px;
+  line-height: 1.7;
+  tab-size: 4;
+}
+
+.prose pre code {
+  font: inherit;
+}
+
+.prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.prose table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.prose th,
+.prose td {
+  padding: 8px 2ch 8px 0;
+  border-bottom: 1px solid var(--line-soft);
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.prose th {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* ---------- small screens ---------- */
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 26px;
+  }
+
+  .content {
+    padding-block: 48px 72px;
+  }
+}

@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { Content, frontmatter } from '../content/about.md';
+
+const now: Record<string, string> = frontmatter.now ?? {};
+const elsewhere: Record<string, string> = frontmatter.elsewhere ?? {};
+
+// https://github.com/itsserhii -> github.com/itsserhii, mailto:hi@x.dev -> hi@x.dev
+const display = (url: string) => url.replace(/^(https?:\/\/|mailto:)/, '');
+---
+
+<Base title="about">
+  <PageHeader path="about" />
+  <article class="column content prose">
+    <Content />
+
+    <h2>now</h2>
+    <dl>
+      {
+        Object.entries(now).map(([label, value]) => (
+          <>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </>
+        ))
+      }
+    </dl>
+
+    <h2>elsewhere</h2>
+    <dl>
+      {
+        Object.entries(elsewhere).map(([label, url]) => (
+          <>
+            <dt>{label}</dt>
+            <dd>
+              <a href={url}>{display(url)}</a>
+            </dd>
+          </>
+        ))
+      }
+    </dl>
+  </article>
+</Base>
+
+<style>
+  dl {
+    display: grid;
+    grid-template-columns: 12ch 1fr;
+    gap: 8px 2ch;
+  }
+
+  dt {
+    color: var(--muted);
+  }
+</style>

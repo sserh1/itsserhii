@@ -1,0 +1,52 @@
+---
+// Header band with the grid texture, closed by a row rule.
+// Pass `path` for a plain `~/path` title, or put custom content in the slot.
+import Rule from './Rule.astro';
+
+interface Props {
+  path?: string;
+}
+
+const { path } = Astro.props;
+---
+
+<header class="band">
+  <div class="column">
+    {path ? <h1><span class="prefix">~/</span>{path}</h1> : <slot />}
+  </div>
+</header>
+<Rule />
+
+<style>
+  .band {
+    position: relative;
+    padding-block: 104px 72px;
+  }
+
+  .band::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 16px 16px;
+    mask-image: linear-gradient(to bottom, #000, rgba(0, 0, 0, 0.15));
+    pointer-events: none;
+  }
+
+  .column {
+    position: relative;
+  }
+
+  .prefix {
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  @media (max-width: 640px) {
+    .band {
+      padding-block: 64px 48px;
+    }
+  }
+</style>
