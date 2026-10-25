@@ -10,9 +10,45 @@ const links = [
 ---
 
 <header class="nav column">
-  <a class="logo" href="/">
-    {site.title}{site.caret && <span class="caret" aria-hidden="true"></span>}
+  <a class="logo" href="/" aria-label={site.title}>
+    <span class="logo-text" aria-hidden="true">{[...site.title].map((char) => <span>{char}</span>)}</span><span class:list={['caret', { 'is-on': site.caret }]} aria-hidden="true"></span>
   </a>
+  <script is:inline>
+    // Types the logo out when the site is opened or reloaded, but not on clicks
+    // between its pages. Runs right after the logo is parsed, so the full text
+    // never flashes before the animation.
+    (() => {
+      const type = performance.getEntriesByType('navigation')[0]?.type;
+      const fromSite = document.referrer.startsWith(location.origin + '/');
+      if (type === 'back_forward' || (type !== 'reload' && fromSite)) return;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const logo = document.querySelector('.logo');
+      const chars = [...logo.querySelectorAll('.logo-text > span')];
+      const caret = logo.querySelector('.caret');
+      logo.classList.add('is-intro');
+
+      // A beat of blinking caret, then uneven keystrokes with a pause between words.
+      let t = 500;
+      chars.forEach((char, i) => {
+        t += 55 + Math.random() * 75;
+        if (chars[i - 1]?.textContent === ' ') t += 110;
+        if (char.textContent === "'") t += 60;
+        setTimeout(() => {
+          logo.classList.add('is-typing');
+          char.classList.add('is-typed');
+        }, t);
+      });
+
+      // Blink twice after the last key, then fade the caret out unless it stays on.
+      setTimeout(() => logo.classList.remove('is-typing'), t + 150);
+      setTimeout(() => {
+        if (caret.classList.contains('is-on')) return logo.classList.remove('is-intro');
+        logo.classList.add('is-fading');
+        setTimeout(() => logo.classList.remove('is-intro', 'is-fading'), 400);
+      }, t + 150 + 2200);
+    })();
+  </script>
   <nav>
     <ul>
       {
@@ -40,6 +76,7 @@ const links = [
     font-size: 15px;
     line-height: 1;
     font-weight: 700;
+    white-space: pre;
     text-decoration: none;
   }
 
@@ -70,17 +107,41 @@ const links = [
   }
 
   .caret {
-    display: inline-block;
+    display: none;
     width: 0.6em;
     height: 1.1em;
-    margin-left: 0.2em;
+    margin-left: 0.1em;
     vertical-align: -0.2em;
     background: var(--accent);
     animation: blink 1.1s steps(1) infinite;
   }
 
+  .caret.is-on,
+  .is-intro .caret {
+    display: inline-block;
+  }
+
+  /* Intro: letters stay hidden until typed, and the caret holds still while keys are pressed. */
+  .is-intro .logo-text > span:not(.is-typed) {
+    display: none;
+  }
+
+  .is-typing .caret {
+    animation: none;
+  }
+
+  .is-fading .caret {
+    animation: caret-out 0.4s ease-out forwards;
+  }
+
   @keyframes blink {
     50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes caret-out {
+    to {
       opacity: 0;
     }
   }
