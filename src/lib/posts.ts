@@ -14,9 +14,3 @@ export const postUrl = (post: Post) => `/posts/${post.id}/`;
 export const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 
 export const formatTags = (tags: string[]) => tags.map((tag) => `#${tag}`).join(' ');
-
-/** Minutes to read at ~200 words per minute. */
-export function readingTime(markdown = '') {
-  const words = markdown.split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.round(words / 200));
-}
