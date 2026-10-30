@@ -1,14 +1,17 @@
 // Shiki theme for code blocks: keywords in accent, comments muted italic,
-// everything else ink. Colors mirror the tokens in src/styles/global.css.
-const ink = '#2A2925';
-const muted = '#76726A';
-const accent = '#A3502B';
+// everything else ink. Shiki needs real hex colors to tokenize, so the theme
+// uses the light palette and `colorReplacements` swaps each one for its CSS
+// token: code blocks then follow the light/dark theme in global.css.
+const ink = '#2a2925';
+const muted = '#76726a';
+const accent = '#a3502b';
+const codeBg = '#f6f4ee';
 
 export default {
   name: 'itsserhii',
   type: 'light',
   colors: {
-    'editor.background': '#F6F4EE',
+    'editor.background': codeBg,
     'editor.foreground': ink,
   },
   tokenColors: [
@@ -37,4 +40,11 @@ export default {
       settings: { foreground: muted, fontStyle: 'italic' },
     },
   ],
+  // Keys must be lowercase: Shiki lowercases colors before looking them up.
+  colorReplacements: {
+    [ink]: 'var(--ink)',
+    [muted]: 'var(--muted)',
+    [accent]: 'var(--accent)',
+    [codeBg]: 'var(--code-bg)',
+  },
 };

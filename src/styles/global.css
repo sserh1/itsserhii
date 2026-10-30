@@ -12,6 +12,7 @@
   --line-dashed: #dcd7cb;
   --marker: #a39e93;
   --grid: rgba(42, 41, 37, 0.06);
+  --selection: rgba(163, 80, 43, 0.18);
   --font: "JetBrains Mono", ui-monospace, monospace;
 
   --col: 680px;
@@ -20,7 +21,25 @@
   --g1: calc(var(--col) / 2 + 40px);
   --g2: calc(var(--g1) + 108px);
 
-  color-scheme: light;
+  color-scheme: light dark;
+}
+
+/* Dark theme follows the OS / browser setting. Same warm palette, lit from below. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161513;
+    --ink: #e8e4da;
+    --muted: #938e83;
+    --accent: #dd855a;
+    --surface: #25231f;
+    --code-bg: #1c1b18;
+    --line: #2d2b27;
+    --line-soft: #23221f;
+    --line-dashed: #3a3833;
+    --marker: #615d55;
+    --grid: rgba(232, 228, 218, 0.045);
+    --selection: rgba(221, 133, 90, 0.3);
+  }
 }
 
 /* ---------- base ---------- */
@@ -62,12 +81,22 @@ a:focus-visible {
 }
 
 ::selection {
-  background: rgba(163, 80, 43, 0.18);
+  background: var(--selection);
 }
 
 .column {
   width: min(var(--col), 100% - 2 * var(--gutter));
   margin-inline: auto;
+}
+
+/* Read by screen readers, not shown. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* Main block between the header band (or nav) and the footer. */

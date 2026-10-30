@@ -22,7 +22,7 @@ npm run build    # static site in dist/
   ```
 
 - **Books:** `src/content/books.md`, one `## Title` per book followed by a paragraph or two.
-- **About:** `src/content/about.md`. The body is the bio; `now` and `elsewhere` in the frontmatter render as the two lists below it (an empty one is hidden). An `elsewhere` value can be a URL, an email, or an `@handle` for `tg` / `x`.
+- **Home (about):** `src/content/about.md` is the root page. The body is the bio; an optional `now` list in the frontmatter renders below it. `elsewhere` becomes the contact icons in the footer: a value can be a URL, an email, or an `@handle` for `tg` / `x`. The post list lives at `/blog/`.
 
 Code blocks are highlighted at build time; the colors live in `src/code-theme.mjs`. Design tokens and the guide lines are in `src/styles/global.css`.
 

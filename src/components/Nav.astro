@@ -3,9 +3,8 @@ import { site } from '../site';
 
 const path = Astro.url.pathname;
 const links = [
-  { href: '/', label: 'blog', active: path === '/' || path.startsWith('/posts/') },
+  { href: '/blog/', label: 'blog', active: path.startsWith('/blog') || path.startsWith('/posts/') },
   { href: '/books/', label: 'books', active: path.startsWith('/books') },
-  { href: '/about/', label: 'about', active: path.startsWith('/about') },
 ];
 ---
 

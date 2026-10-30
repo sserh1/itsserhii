@@ -1,81 +1,44 @@
 ---
 import Base from '../layouts/Base.astro';
-import { formatDate, formatTags, getPosts, postUrl } from '../lib/posts';
+import PageHeader from '../components/PageHeader.astro';
+import Contacts from '../components/Contacts.astro';
+import { Content, frontmatter } from '../content/about.md';
 
-const posts = await getPosts();
+const now = Object.entries<string>(frontmatter.now ?? {});
 ---
 
 <Base>
-  <div class="column content">
-    <ul class="posts">
-      {
-        posts.map((post) => (
-          <li>
-            <a href={postUrl(post)}>
-              <time class="date" datetime={formatDate(post.data.date)}>
-                {formatDate(post.data.date)}
-              </time>
-              <span class="title">{post.data.title}</span>
-              <span class="tags">{formatTags(post.data.tags)}</span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
+  <PageHeader path="about" />
+  <article class="column content prose">
+    <Content />
+
+    {
+      now.length > 0 && (
+        <>
+          <h2>now</h2>
+          <dl>
+            {now.map(([label, value]) => (
+              <>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </>
+            ))}
+          </dl>
+        </>
+      )
+    }
+  </article>
+  <Contacts slot="footer-left" />
 </Base>
 
 <style>
-  .posts {
-    padding: 0;
-    list-style: none;
-  }
-
-  a {
+  dl {
     display: grid;
-    grid-template-columns: 10ch 1fr auto;
-    gap: 2ch;
-    align-items: baseline;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--line-soft);
-    text-decoration: none;
+    grid-template-columns: 12ch 1fr;
+    gap: 8px 2ch;
   }
 
-  .date,
-  .tags {
+  dt {
     color: var(--muted);
-    font-size: 13px;
-  }
-
-  .title {
-    font-size: 15px;
-    line-height: 1.5;
-  }
-
-  a:hover .title {
-    color: var(--accent);
-  }
-
-  @media (max-width: 640px) {
-    a {
-      grid-template-columns: auto 1fr;
-      grid-template-areas:
-        'date tags'
-        'title title';
-      row-gap: 4px;
-    }
-
-    .date {
-      grid-area: date;
-    }
-
-    .tags {
-      grid-area: tags;
-      text-align: right;
-    }
-
-    .title {
-      grid-area: title;
-    }
   }
 </style>

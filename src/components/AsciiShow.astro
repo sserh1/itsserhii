@@ -1,0 +1,43 @@
+---
+// ASCII animations for the home band: donut, landscape, surfer, boxers and
+// bachata, morphing into each other. The first frame is rendered at build
+// time, so the band has its final size before any JS runs.
+import { firstFrame } from '../lib/ascii/player';
+---
+
+<pre class="ascii" aria-hidden="true">{firstFrame()}</pre>
+
+<script>
+  import { play } from '../lib/ascii/player';
+
+  const pre = document.querySelector<HTMLElement>('.ascii');
+  if (pre && !matchMedia('(prefers-reduced-motion: reduce)').matches) play(pre);
+</script>
+
+<style>
+  /* 24 rows of 1.2em fit the home band (~295px); 72 columns still fit a phone. */
+  .ascii {
+    width: fit-content;
+    margin: 0 auto;
+    font-size: 9px;
+    line-height: 1.2;
+    color: var(--ink);
+    white-space: pre;
+    user-select: none;
+    /* Ligatures would merge runs like "==" or "!=" and warp the drawing. */
+    font-variant-ligatures: none;
+    font-feature-settings: 'calt' 0, 'liga' 0;
+  }
+
+  @media (max-width: 640px) {
+    .ascii {
+      font-size: 7px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .ascii {
+      font-size: 6px;
+    }
+  }
+</style>

@@ -19,6 +19,8 @@ const year = new Date().getFullYear();
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fdfcfa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#161513" media="(prefers-color-scheme: dark)" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -49,6 +51,7 @@ const year = new Date().getFullYear();
 <style>
   .footer {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     gap: 2ch;
     padding-block: 28px 44px;
